@@ -6,6 +6,7 @@ import TodoItem from './TodoItem';
 const TodoApp = () => {
     const [todoItem,setTodoItem] = useState('')
     const [todos,setTodos] = useState([])
+
     const handleTodoItem = (e)=>{
         setTodoItem(e.target.value)
     }
@@ -18,8 +19,22 @@ const TodoApp = () => {
         setTodos(prev=>{
             return [...prev,newTodoObject]
         })
+        setTodoItem("")
     }
-    console.log(todos)
+   
+
+    const handleDelete =(_id)=>{
+        setTodos((prev)=>
+         prev.filter((item)=>item.id!=_id
+            )
+        )
+    }
+
+    const handleEdit=(_id)=>{
+        let editingItem = todos.find((item)=>item.id===_id)
+        setTodoItem(editingItem)
+
+    }
     
   return (
     <>
@@ -27,7 +42,7 @@ const TodoApp = () => {
             <TodoForm handleSubmit={handleSubmit} todoItem={todoItem} handleTodoItem={handleTodoItem} />
                 <div className="todoList">
                     {todos.map((todo)=>{
-                        return <TodoItem key={todo.id} todo={todo}/>
+                        return <TodoItem key={todo.id} todo={todo} handleDelete={handleDelete} handleEdit={handleEdit}/>
 
                     })}
                 </div>
